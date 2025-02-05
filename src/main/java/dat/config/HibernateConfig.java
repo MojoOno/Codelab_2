@@ -1,5 +1,6 @@
 package dat.config;
 
+import dat.entities.Course;
 import dat.entities.Person;
 import dat.utils.Utils;
 import jakarta.persistence.EntityManagerFactory;
@@ -41,6 +42,7 @@ public class HibernateConfig {
     private static void getAnnotationConfiguration(Configuration configuration) {
          // configuration.addAnnotatedClass(Point.class);
         configuration.addAnnotatedClass(Person.class);
+        configuration.addAnnotatedClass(Course.class);
     }
 
     private static EntityManagerFactory createEMF(boolean forTest) {
