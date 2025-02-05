@@ -2,8 +2,12 @@ package dat.dao;
 
 
 import dat.entities.Course;
+import dat.entities.Person;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
+
+import java.util.List;
 
 public class CourseDAO
 {
@@ -26,7 +30,7 @@ public class CourseDAO
 
     }
 
-    public void createCourse(Course course)
+    public void create(Course course)
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -36,7 +40,7 @@ public class CourseDAO
         }
     }
 
-    public void updateCourse(Course course)
+    public void update(Course course)
     {
         try(EntityManager em = emf.createEntityManager())
         {
@@ -44,6 +48,29 @@ public class CourseDAO
             em.merge(course);
             em.getTransaction().commit();
         }
-
     }
+
+    public void delete(Course course)
+    {
+        try(EntityManager em = emf.createEntityManager())
+        {
+            em.getTransaction().begin();
+            em.remove(course);
+            em.getTransaction().commit();
+        }
+    }
+
+    public List<Course> toList()
+    {
+        try(EntityManager em = emf.createEntityManager())
+        {
+            String jpql = "SELECT e FROM Course e";
+            TypedQuery<Course> query = em.createQuery(jpql, Course.class);
+            List<Course> courseList = query.getResultList();
+            return courseList;
+        }
+    }
+
+
+
 }

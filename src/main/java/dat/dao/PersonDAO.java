@@ -4,6 +4,10 @@ package dat.dao;
 import dat.entities.Person;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+
+import java.util.List;
 
 public class PersonDAO
 {
@@ -27,7 +31,7 @@ public class PersonDAO
     }
 
 
-    public void createPerson(Person person)
+    public void create(Person person)
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -36,4 +40,36 @@ public class PersonDAO
             em.getTransaction().commit();
         }
     }
+
+    public void update(Person person)
+    {
+        try(EntityManager em = emf.createEntityManager())
+        {
+            em.getTransaction().begin();
+            em.merge(person);
+            em.getTransaction().commit();
+        }
+    }
+
+    public void delete(Person person)
+    {
+        try(EntityManager em = emf.createEntityManager())
+        {
+            em.getTransaction().begin();
+            em.remove(person);
+            em.getTransaction().commit();
+        }
+    }
+
+    public List<Person> toList()
+    {
+        try(EntityManager em = emf.createEntityManager())
+        {
+            String jpql = "SELECT e FROM Person e";
+            TypedQuery<Person> query = em.createQuery(jpql, Person.class);
+            List<Person> personList = query.getResultList();
+            return personList;
+        }
+    }
+
 }
